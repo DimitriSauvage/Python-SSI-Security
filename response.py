@@ -3,7 +3,9 @@ from assets.bottle import route, Bottle
 responseApp = Bottle()
 
 @route('/responses')
-def getAll():
+def get_all():
+    """
+
+    :return:
+    """
     return "TEST!!!"
-
-
