@@ -5,12 +5,15 @@ from question import questionApp
 from response import responseApp
 
 # Get app
+from result import resultApp
+
 mainApp = Bottle()
 
 # Include others api controllers
 mainApp.merge(responseApp)
 mainApp.merge(questionApp)
 mainApp.merge(maturityApp)
+mainApp.merge(resultApp)
 mainApp.merge(levelApp)
 
 # Run the app

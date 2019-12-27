@@ -26,7 +26,7 @@ def getLevel(identifier):
     if question_cursor is not None:
         has_title = False
         current_question_id = None
-        for row in question_cursor.fetchAll():
+        for row in question_cursor.fetchall():
             # Title
             if not has_title:
                 content = row[0] + '<br/>'
@@ -70,19 +70,19 @@ def getAll():
 
     current_level_id = None
     current_question_id = None
-    for row in question_cursor.fetchAll():
+    for row in question_cursor.fetchall():
         # Title
         if current_level_id is None or current_level_id != row[0]:
-            content = row[1] + '<br/>'
+            content += row[1] + '<br/>'
             current_level_id = row[0]
 
         # Question
         if current_question_id is None or current_question_id != row[2]:
-            content += row[3] + '<br/>'
+            content += 'Question ' + str(row[2]) + ' : ' + row[3] + '<br/>'
             current_question_id = row[2]
 
         # Answers
-        content += row[5] + "<br/>"
+        content += str(row[4]) + ' - ' + row[5] + "<br/>"
 
     # Set the result
     result = HTTPResponse(status=200, body=content)

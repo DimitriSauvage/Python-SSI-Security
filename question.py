@@ -22,7 +22,7 @@ def getQuestion(identifier):
                                         ORDER BY Response.Value""", conn)
     if question_cursor is not None:
         has_question = False
-        for row in question_cursor.fetchAll():
+        for row in question_cursor.fetchall():
             # Question
             if has_question is False:
                 has_question = True
@@ -62,7 +62,7 @@ def getAll():
             question_id = row[0]
 
         # Answers
-        content += str(row[2]) + ' - ' + row[3]
+        content += str(row[2]) + ' - ' + row[3] + '<br/>'
 
     conn.close()
 

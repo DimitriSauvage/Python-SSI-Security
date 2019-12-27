@@ -11,8 +11,6 @@ def getConnection(server='localhost', database='ISO_21827', username='ISO21827',
 
 
 # Execute a request
-def executeRequest(request, connection=getConnection()):
-    cursor = getConnection().cursor()
-    response = cursor.execute(request)
-    connection.commit()
-    return response
+def executeRequest(request, connection):
+    cursor = connection.cursor()
+    return cursor.execute(request)
