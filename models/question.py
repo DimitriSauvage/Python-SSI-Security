@@ -1,4 +1,7 @@
 class Question:
-    id = None
-    question = None
-    id_niveau = None
+
+    def __init__(self):
+        self.id = None
+        self.question = None
+        self.id_level = None
+        self.responses = []

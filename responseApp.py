@@ -1,7 +1,9 @@
-from assets.bottle import run, Bottle, get, HTTPResponse, put, request
+from assets.bottle import Bottle, put, request
 from database.sqlServer import executeRequest, getConnection
 
 # Get app
+from helpers.HTTPResponseHelper import getHTTPResponse
+
 responseApp = Bottle()
 
 
@@ -18,29 +20,30 @@ def setResponse(question_id, response):
     ip = request.environ.get('REMOTE_ADDR')
 
     # Get the Id of the response
-    answer_cursor = executeRequest("""SELECT Id
+    response_cursor = executeRequest("""SELECT Id
                                         FROM Response
                                         WHERE Response.Value = """ + str(response) + """
                                         AND Response.IdQuestion = """ + str(question_id), conn)
-    if answer_cursor is None:
-        result = HTTPResponse(status=500, body="This answer does not exist for this question")
+    if response_cursor is None:
+        result = getHTTPResponse(500, "This response does not exist for this question", False)
     else:
-        response_id = answer_cursor.fetchone()[0]
+        response_id = response_cursor.fetchone()[0]
 
-        # Check if the user has already answered to the question
-        has_answered_cursor = executeRequest(
+        # Check if the user has already responded to the question
+        has_responded_cursor = executeRequest(
             "SELECT Id FROM User_Response WHERE IdQuestion = {} AND [User] = '{}'".format(int(question_id), ip), conn)
-        user_response_id = has_answered_cursor.fetchone()[0]
+        user_response_id = has_responded_cursor.fetchone()[0]
 
         if user_response_id is not None:
             executeRequest(
                 "UPDATE User_Response SET IdResponse = {} WHERE Id = {}".format(response_id, user_response_id), conn)
-            result = HTTPResponse(status=204)
+
+            result = getHTTPResponse(204, "", False)
         else:
             executeRequest(
                 "INSERT INTO User_Response(IdQuestion, IdResponse, [User]) VALUES ({}, {}, '{}')".format(
                     question_id, response_id, ip), conn)
-            result = HTTPResponse(status=201, body="Response created successfully")
+            result = getHTTPResponse(201, "Response created successfully", False)
 
         # Commit entries
         conn.commit()

@@ -1,11 +1,10 @@
 from assets.bottle import run, Bottle
-from level import levelApp
-from maturity import maturityApp
-from question import questionApp
-from response import responseApp
-
+from levelApp import levelApp
+from maturityApp import maturityApp
+from questionApp import questionApp
+from responseApp import responseApp
 # Get app
-from result import resultApp
+from resultApp import resultApp
 
 mainApp = Bottle()
 
