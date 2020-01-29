@@ -31,7 +31,7 @@ def setResponse(question_id, response):
 
         # Check if the user has already responded to the question
         has_responded_cursor = executeRequest(
-            "SELECT Id FROM User_Response WHERE IdQuestion = {} AND [User] = '{}'".format(int(question_id), ip), conn)
+            "SELECT Id FROM User_Response WHERE IdQuestion = {} AND User_Response.User = '{}'".format(int(question_id), ip), conn)
         user_response_id = has_responded_cursor.fetchone()[0]
 
         if user_response_id is not None:
@@ -41,7 +41,7 @@ def setResponse(question_id, response):
             result = getHTTPResponse(204, "", False)
         else:
             executeRequest(
-                "INSERT INTO User_Response(IdQuestion, IdResponse, [User]) VALUES ({}, {}, '{}')".format(
+                "INSERT INTO User_Response(IdQuestion, IdResponse, User) VALUES ({}, {}, '{}')".format(
                     question_id, response_id, ip), conn)
             result = getHTTPResponse(201, "Response created successfully", False)
 

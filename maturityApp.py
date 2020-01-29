@@ -75,12 +75,12 @@ def setResponses(**params):
         ip = request.environ.get('REMOTE_ADDR')
 
         # Delete all responses of the users
-        executeRequest("DELETE FROM User_Response WHERE [User] = '{}'".format(ip), conn)
+        executeRequest("DELETE FROM User_Response WHERE User_Response.User = '{}'".format(ip), conn)
 
         count = 1
         for response_value in params:
             # Get the response id
-            response_cursor = executeRequest("SELECT Id FROM Response WHERE [Value] = {}".format(int(response_value)),
+            response_cursor = executeRequest("SELECT Id FROM Response WHERE Response.Value = {}".format(int(response_value)),
                                              conn)
             response_id_value = response_cursor.fetchone()
             if response_id_value is None:
@@ -91,7 +91,7 @@ def setResponses(**params):
                 break
             else:
                 executeRequest(
-                    "INSERT INTO User_Response(IdQuestion, IdResponse, [User]) VALUES ({}, {}, '{}')".format(
+                    "INSERT INTO User_Response(IdQuestion, IdResponse, User) VALUES ({}, {}, '{}')".format(
                         count, int(response_id_value[0]), ip), conn)
 
                 count += 1
